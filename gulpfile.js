@@ -5,7 +5,7 @@ var cors = require('cors');
 gulp.task('server', function(){
   browserSync.init({
     server: {
-      baseDir:'src/.',
+      baseDir:'src/',
       // middleware: function (req, res, next){
       //   cors(req, res, next)
       //   next();
