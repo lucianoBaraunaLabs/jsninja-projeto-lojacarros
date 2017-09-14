@@ -1,4 +1,4 @@
-(function($) {
+(function($, doc) {
   'use strict';
 
   /*
@@ -37,8 +37,7 @@
   */
 
   var app = (function(){
-    var $formRegisterCar = $('[data-js="form-register"]');
-
+   
     return {
 
       init: function init(){
@@ -59,29 +58,82 @@
         $tableCar.appendChild(app.createNewCar());
       },
 
+      getValueInputs: function getValueInputs(){
+        var teste = $('[data-js="form-register"] input[type="text"]'); // Aqui com a lib DOM.JS não funciona e para solucionar precisei passar a declaração completa.
+
+        return Array.prototype.map.call(
+          doc.querySelectorAll('[data-js="form-register"] input[type="text"]'), function(element, value) {
+            
+              return element.value;
+
+            // Validar depois se for o caso
+            // if( !(element.value === '') )
+            //   return element.value;
+            // return alert('Por favor preecha os campos.'); Validando os campos
+          }
+        );
+
+      },
+
       createNewCar: function createNewCar(){
+
+        function createDomElement(element) {
+          return document.createElement(element);
+        }
+
         var $fragment = document.createDocumentFragment();
-        var $tr = document.createElement('tr');
-        var $tdImage = document.createElement('td');
-        var $image = document.createElement('img');
-        var $tdBrand = document.createElement('td');
-        var $tdYear = document.createElement('td');
-        var $tdPlate = document.createElement('td');
-        var $tdColor = document.createElement('td');
+        var $tr = createDomElement('tr');
+        var $tdImage = createDomElement('td');
+        var $image = createDomElement('img');
+        var $tdBrand = createDomElement('td');
+        var $tdYear = createDomElement('td');
+        var $tdPlate = createDomElement('td');
+        var $tdColor = createDomElement('td');
 
-        $tdImage.appendChild($image);
         $image.setAttribute('src', $('[data-js="image"]').get().value);
+        $tdImage.appendChild($image);
 
-        $tdBrand.textContent = $('[data-js="brand-model"]').get().value;
-        $tdYear.textContent = $('[data-js="year"]').get().value;
-        $tdPlate.textContent = $('[data-js="plate"]').get().value;
-        $tdColor.textContent = $('[data-js="color"]').get().value;
+        // $tdBrand.textContent = $('[data-js="brand-model"]').get().value;
+        // $tdYear.textContent = $('[data-js="year"]').get().value;
+        // $tdPlate.textContent = $('[data-js="plate"]').get().value;
+        // $tdColor.textContent = $('[data-js="color"]').get().value;
 
-        $tr.appendChild($tdImage);
-        $tr.appendChild($tdBrand);
-        $tr.appendChild($tdYear);
-        $tr.appendChild($tdPlate);
-        $tr.appendChild($tdColor);
+        var listValuesInputsText = app.getValueInputs();
+        var listElmentsContent = [
+          $tdBrand,
+          $tdYear,
+          $tdPlate,
+          $tdColor
+        ];
+
+
+        for (var i = 0; i < listElmentsContent.length; i++){
+          listElementsAppend[i].textContent = listValuesInputsText[i]);
+        }
+
+
+        console.log(listValuesInputsText);
+
+        
+
+
+        
+        // console.log(document.querySelectorAll('[data-js="form-register"] input[type="text"]'));
+
+
+
+
+        var listElementsAppend = [
+          $tdImage, 
+          $tdBrand, 
+          $tdYear, 
+          $tdPlate, 
+          $tdColor
+        ];
+
+        for (var i = 0; i < listElementsAppend.length; i++){
+          $tr.appendChild(listElementsAppend[i]);
+        }
 
         return $fragment.appendChild($tr);
       },
@@ -106,8 +158,6 @@
         $companyName.textContent = data.name;
         $companyPhone.textContent = data.phone;
 
-
-
       },
 
       isReady: function isReady(){
@@ -120,6 +170,6 @@
 
   app.init();
 
-})(window.DOM);
+})(window.DOM, document);
 
 
