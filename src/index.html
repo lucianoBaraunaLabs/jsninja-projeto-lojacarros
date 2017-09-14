@@ -8,19 +8,15 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <header>
+  <header class="header">
     <h1>
       <span data-js="company-name"></span> -
       <span data-js="company-phone"></span>
     </h1>
   </header>
 
-  <div>
-    <h2 data-js="nome-empresa"></h2>
-    <p data-js="tel-empresa"></p>
-
-    <form action="" data-js="form-register">
-
+  <div class="wrap">
+    <form class="form-register" action="" data-js="form-register">
       <label for="">Imagem do carro</label>
       <input type="url" data-js="image">
 
@@ -36,23 +32,25 @@
       <label for="">Cor</label>
       <input type="text" data-js="color">
 
-      <button>Cadastrar</button>
+      <button class="btn">CADASTRAR</button>
     </form>
 
-    <div>
+    <div class="list-register">
       <h2>Carros cadastrados</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Imagem</th>
-            <th>Marca / Modelo</th>
-            <th>Ano</th>
-            <th>Placa</th>
-            <th>Cor</th>
-          </tr>
-        </thead>
-        <tbody data-js="table-car"></tbody>
-      </table>
+      <div class="wrap-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Marca / Modelo</th>
+              <th>Ano</th>
+              <th>Placa</th>
+              <th>Cor</th>
+            </tr>
+          </thead>
+          <tbody data-js="table-car"></tbody>
+        </table>
+      </div>
     </div>
 
 
