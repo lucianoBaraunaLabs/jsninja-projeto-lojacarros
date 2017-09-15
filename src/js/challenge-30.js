@@ -37,7 +37,7 @@
   */
 
   var app = (function(){
-   
+
     return {
 
       init: function init(){
@@ -59,11 +59,10 @@
       },
 
       getValueInputs: function getValueInputs(){
-        var teste = $('[data-js="form-register"] input[type="text"]'); // Aqui com a lib DOM.JS não funciona e para solucionar precisei passar a declaração completa.
-
+				var teste = $('[data-js="form-register"] input[type="text"]'); // Dúvida fdaciuk: Aqui com a lib DOM.JS não funciona e para solucionar precisei passar a declaração completa.
         return Array.prototype.map.call(
-          doc.querySelectorAll('[data-js="form-register"] input[type="text"]'), function(element, value) {
-            
+					doc.querySelectorAll('[data-js="form-register"] input[type="text"]'), function(element, value) {
+						console.log('aqui e o this', this);
               return element.value;
 
             // Validar depois se for o caso
@@ -73,7 +72,22 @@
           }
         );
 
-      },
+			},
+
+			setValueInputs: function setContentRow(listElementValues){
+				var listValuesInputsText = app.getValueInputs();
+
+				for (var i = 0; i < listElementValues.length; i++) {
+					listElementValues[i].textContent = listValuesInputsText[i];
+				}
+
+			},
+
+			appendInfoCar: function appendInfoCar($parentElement, listElementsAppend) {
+				for (var i = 0; i < listElementsAppend.length; i++) {
+					$parentElement.appendChild(listElementsAppend[i]);
+				}
+			},
 
       createNewCar: function createNewCar(){
 
@@ -91,49 +105,23 @@
         var $tdColor = createDomElement('td');
 
         $image.setAttribute('src', $('[data-js="image"]').get().value);
-        $tdImage.appendChild($image);
+				$image.setAttribute('class', 'img-car');
+				$tdImage.appendChild($image);
 
-        // $tdBrand.textContent = $('[data-js="brand-model"]').get().value;
-        // $tdYear.textContent = $('[data-js="year"]').get().value;
-        // $tdPlate.textContent = $('[data-js="plate"]').get().value;
-        // $tdColor.textContent = $('[data-js="color"]').get().value;
+				app.setValueInputs([
+						$tdBrand,
+						$tdYear,
+						$tdPlate,
+						$tdColor
+				]);
 
-        var listValuesInputsText = app.getValueInputs();
-        var listElmentsContent = [
-          $tdBrand,
-          $tdYear,
-          $tdPlate,
-          $tdColor
-        ];
-
-
-        for (var i = 0; i < listElmentsContent.length; i++){
-          listElementsAppend[i].textContent = listValuesInputsText[i]);
-        }
-
-
-        console.log(listValuesInputsText);
-
-        
-
-
-        
-        // console.log(document.querySelectorAll('[data-js="form-register"] input[type="text"]'));
-
-
-
-
-        var listElementsAppend = [
-          $tdImage, 
-          $tdBrand, 
-          $tdYear, 
-          $tdPlate, 
-          $tdColor
-        ];
-
-        for (var i = 0; i < listElementsAppend.length; i++){
-          $tr.appendChild(listElementsAppend[i]);
-        }
+				app.appendInfoCar($tr, [
+					$tdImage,
+					$tdBrand,
+					$tdYear,
+					$tdPlate,
+					$tdColor
+				]);
 
         return $fragment.appendChild($tr);
       },

@@ -70,8 +70,8 @@ body {
     background-color: #02350f;
 }
 
-.wrap-table table { 
-    width: 100%; 
+.wrap-table table {
+    width: 100%;
     border-collapse: collapse;
     text-align: left;
 }
@@ -85,4 +85,9 @@ body {
 .wrap-table td {
     padding: 5px 10px;
     border: solid 1px black;
+}
+
+.img-car {
+	max-width: 150px;
+	height: auto;
 }
