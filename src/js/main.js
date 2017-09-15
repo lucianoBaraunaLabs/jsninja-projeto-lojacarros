@@ -20,7 +20,7 @@
             },
             
             initEvents: function initEvents(){
-                $('[data-js=form-register]').on('submit', this.handleSubmit);
+                $('[data-js=form-register]').on('submit', app.handleSubmit);
             },
 
             handleSubmit: function handleSubmit(event){
