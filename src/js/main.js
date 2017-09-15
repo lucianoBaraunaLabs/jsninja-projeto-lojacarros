@@ -7,6 +7,8 @@
             return document.createElement(element);
         }
 
+        
+
         return {
 
             init: function init(){
@@ -31,11 +33,9 @@
             },
             
             getValueInputs: function getValueInputs(){
-                
-                var teste = $('[data-js="form-register"] input[type="text"]'); // Dúvida fdaciuk: Aqui com a lib DOM.JS não funciona e para solucionar precisei passar a declaração completa.
 
                 return Array.prototype.map.call(
-                    doc.querySelectorAll('[data-js="form-register"] input[type="text"]'), function(element, value) {
+                    $('[data-js="form-register"] input[type="text"]').get(), function(element, value) {
                         return element.value;
 
                     // Validar depois se for o caso
@@ -66,34 +66,25 @@
             },
 
             createImageCar: function createImageCar(){
-                
                 var $image = createDomElement('img');
                 $image.setAttribute('src', $('[data-js="image"]').get().value);
                 $image.setAttribute('class', 'img-car');
-
                 return $image;
 
             },
 
-            buttonRemove: function buttonRemove(){
-
+            createRemoveButton: function buttonRemove(){
                 var $button = createDomElement('button');
                 $button.setAttribute('class', 'btn-remove');
                 $button.textContent = "Excluir";
-                
 
-                // console.log($button);
-                $button.addEventListener('click', function(e){
-                    e.preventDefault();
-                    console.log('cliquei');
-                },false);
-
-                // $($button).on('click', function(e){
-                //     e.eventPreventDefault();
-                //     console.log('opa');
-                // });
-
+                $button.addEventListener('click', app.removeTr, false);
                 return $button;
+            },
+
+            removeTr: function removeTr(e){
+                e.preventDefault();
+                console.log(this.parentNode.parentNode.remove());
                 
             },
 
@@ -108,7 +99,7 @@
                 var $tdColor = createDomElement('td');
                 var $tdButton = createDomElement('td');
                 $tdImage.appendChild(app.createImageCar());
-                $tdButton.appendChild(app.buttonRemove());
+                $tdButton.appendChild(app.createRemoveButton());
 
                 app.setValueInputs([
                     $tdBrand,

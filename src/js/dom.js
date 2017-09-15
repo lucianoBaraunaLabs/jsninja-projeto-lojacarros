@@ -6,7 +6,6 @@
       return new DOM(elements);
 
     this.element = doc.querySelectorAll(elements);
-
   }
 
   // test object
