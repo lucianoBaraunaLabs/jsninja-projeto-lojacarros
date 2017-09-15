@@ -1,6 +1,9 @@
 (function ($) {
   'use strict';
 
+  // Código feito apartir do challenge 29.
+  // Esse é um backup antes de ser refatorado
+
   /*
   Vamos estruturar um pequeno app utilizando módulos.
   Nosso APP vai ser um cadastro de carros. Vamos fazê-lo por partes.
