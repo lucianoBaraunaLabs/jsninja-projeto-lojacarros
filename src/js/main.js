@@ -3,12 +3,8 @@
 
     var app = (function(){
 
-        function createDomElement(element) {
-            return document.createElement(element);
-        }
-
-        
-
+        console.log('cola imagem', 'http://bestcars.uol.com.br/bc/wp-content/uploads/2013/09/Opel-Monza-1978-01.jpg');
+        console.log('cola imagem', 'http://qcveiculos.com.br/wp-content/uploads/2016/08/Chevrolet-Monza.jpg');
         return {
 
             init: function init(){
@@ -33,9 +29,8 @@
             },
             
             getValueInputs: function getValueInputs(){
-
                 return Array.prototype.map.call(
-                    $('[data-js="form-register"] input[type="text"]').get(), function(element, value) {
+                    $('[data-js="form-register"] input[type="text"]').getAll(), function(element, value) {
                         return element.value;
 
                     // Validar depois se for o caso
@@ -66,7 +61,7 @@
             },
 
             createImageCar: function createImageCar(){
-                var $image = createDomElement('img');
+                var $image = $().createElement('img');
                 $image.setAttribute('src', $('[data-js="image"]').get().value);
                 $image.setAttribute('class', 'img-car');
                 return $image;
@@ -74,9 +69,9 @@
             },
 
             createRemoveButton: function buttonRemove(){
-                var $button = createDomElement('button');
+                var $button = $().createElement('button');
                 $button.setAttribute('class', 'btn-remove');
-                $button.textContent = "Excluir";
+                $button.textContent = "excluir";
 
                 $button.addEventListener('click', app.removeTr, false);
                 return $button;
@@ -84,20 +79,20 @@
 
             removeTr: function removeTr(e){
                 e.preventDefault();
-                console.log(this.parentNode.parentNode.remove());
+                this.parentNode.parentNode.remove();
                 
             },
 
             createNewCar: function createNewCar(){
 
                 var $fragment = document.createDocumentFragment();
-                var $tr = createDomElement('tr');
-                var $tdImage = createDomElement('td');
-                var $tdBrand = createDomElement('td');
-                var $tdYear = createDomElement('td');
-                var $tdPlate = createDomElement('td');
-                var $tdColor = createDomElement('td');
-                var $tdButton = createDomElement('td');
+                var $tr = $().createElement('tr');
+                var $tdImage = $().createElement('td');
+                var $tdBrand = $().createElement('td');
+                var $tdYear = $().createElement('td');
+                var $tdPlate = $().createElement('td');
+                var $tdColor = $().createElement('td');
+                var $tdButton = $().createElement('td');
                 $tdImage.appendChild(app.createImageCar());
                 $tdButton.appendChild(app.createRemoveButton());
 
