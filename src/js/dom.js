@@ -6,6 +6,7 @@
       return new DOM(elements);
 
     this.element = doc.querySelectorAll(elements);
+
   }
 
   // test object
@@ -53,6 +54,13 @@
     return this.element[index];
   }
 
+  DOM.prototype.getAll = function methodGetall(){
+      return this.element;
+  }
+
+  DOM.prototype.createElement = function methodCreateElement(elements){
+      return doc.createElement(elements);
+  }
 
   DOM.isArray = function isArray(object, param) {
     return testeObject.createObj(object) === '[object Array]';
