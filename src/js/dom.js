@@ -58,7 +58,7 @@
       return this.element;
   }
 
-  DOM.prototype.createElement = function methodCreateElement(elements){
+  DOM.createElement = function methodCreateElement(elements){
       return doc.createElement(elements);
   }
 
@@ -90,6 +90,7 @@
     return testObject.createObj(param) === testObject.valueObj('null') ||
       testObject.createObj(param) === testObject.valueObj('undefined');
   }
+
 
   win.DOM = DOM;
 })(window, document)
