@@ -61,7 +61,7 @@
             },
 
             createImageCar: function createImageCar(){
-                var $image = $().createElement('img');
+                var $image = $.createElement('img');
                 $image.setAttribute('src', $('[data-js="image"]').get().value);
                 $image.setAttribute('class', 'img-car');
                 return $image;
@@ -69,7 +69,7 @@
             },
 
             createRemoveButton: function buttonRemove(){
-                var $button = $().createElement('button');
+                var $button = $.createElement('button');
                 $button.setAttribute('class', 'btn-remove');
                 $button.textContent = "excluir";
 
@@ -86,13 +86,13 @@
             createNewCar: function createNewCar(){
 
                 var $fragment = document.createDocumentFragment();
-                var $tr = $().createElement('tr');
-                var $tdImage = $().createElement('td');
-                var $tdBrand = $().createElement('td');
-                var $tdYear = $().createElement('td');
-                var $tdPlate = $().createElement('td');
-                var $tdColor = $().createElement('td');
-                var $tdButton = $().createElement('td');
+                var $tr = $.createElement('tr');
+                var $tdImage = $.createElement('td');
+                var $tdBrand = $.createElement('td');
+                var $tdYear = $.createElement('td');
+                var $tdPlate = $.createElement('td');
+                var $tdColor = $.createElement('td');
+                var $tdButton = $.createElement('td');
                 $tdImage.appendChild(app.createImageCar());
                 $tdButton.appendChild(app.createRemoveButton());
 
