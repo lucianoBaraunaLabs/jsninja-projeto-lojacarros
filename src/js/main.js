@@ -29,20 +29,38 @@
             },
             
             getValueInputs: function getValueInputs(){
-                return Array.prototype.map.call(
-                    $('[data-js="form-register"] input[type="text"]').getAll(), function(element, value) {
-                        return element.value;
+                // return Array.prototype.map.call(
+                //     $('[data-js="form-register"] input[type="text"]').getAll(), function(element, value) {
+                //         return element.value;
 
-                    // Validar depois se for o caso
-                    // if( !(element.value === '') )
-                    //   return element.value;
-                    // return alert('Por favor preecha os campos.'); Validando os campos
+                //     // Validar depois se for o caso
+                //     // if( !(element.value === '') )
+                //     //   return element.value;
+                //     // return alert('Por favor preecha os campos.'); Validando os campos
+                //     }
+                // );
+                return Array.prototype.map.call(
+                    $('[data-js="form-register"] input').getAll(), function(element, index) {
+                        console.log('element', element.getAttribute('data-js=brand-model'));
+                        console.log('value', index);
+                        console.log('valor do elemento', element.value);
+                        console.log('obj', { 
+                            imageCar: element.value, 
+                            brandModelCar: element.value, 
+                            yearCar: element.value, 
+                            plateCar: element.value, 
+                            colorCar: element.value, 
+                        });
+                        
+                        return element;
                     }
                 );
 
             },
             
             setValueInputs: function setContentRow(listElementValues){
+
+                
                 
                 var listValuesInputsText = app.getValueInputs();
 
@@ -113,6 +131,10 @@
                 ]);
 
                 return $fragment.appendChild($tr);
+            },
+
+            postNewCar: function postNewCar(){
+
             },
 
             companyInfo: function companyInfo() {
