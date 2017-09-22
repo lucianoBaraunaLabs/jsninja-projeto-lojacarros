@@ -39,34 +39,44 @@
                 //     // return alert('Por favor preecha os campos.'); Validando os campos
                 //     }
                 // );
-                return Array.prototype.map.call(
-                    $('[data-js="form-register"] input').getAll(), function(element, index) {
-                        console.log('element', element.getAttribute('data-js=brand-model'));
-                        console.log('value', index);
-                        console.log('valor do elemento', element.value);
-                        console.log('obj', { 
-                            imageCar: element.value, 
-                            brandModelCar: element.value, 
-                            yearCar: element.value, 
-                            plateCar: element.value, 
-                            colorCar: element.value, 
-                        });
-                        
-                        return element;
-                    }
+                
+                // return Array.prototype.map.call(
+                //     $('[data-js="form-register"] input').getAll(), function(element, index) {
+                //         return element.value;
+                //     }
+                // );
+
+
+                return Array.prototype.reduce.call(
+                    $('[data-js="form-register"] input').getAll(), function (acumulated, element, index) {
+                         acumulated[element.getAttribute('data-js')] = element.value
+                        return acumulated;
+                    },{}
                 );
 
             },
             
-            setValueInputs: function setContentRow(listElementValues){
-
+            setValueAndCreateTr: function setContentRow(listElementValues){
                 
-                
-                var listValuesInputsText = app.getValueInputs();
+                var dataValue = app.getValueInputs();
 
-                for (var i = 0; i < listElementValues.length; i++) {
-                    listElementValues[i].textContent = listValuesInputsText[i];
-                }
+                console.log('resultado da funcao', dataValue);
+
+                var $tr = $.createElement('tr');
+                var $tdBrand = $.createElement('td');
+                var $tdYear = $.createElement('td');
+                var $tdPlate = $.createElement('td');
+                var $tdColor = $.createElement('td');
+                
+                var $tdImage = $.createElement('td');
+                $tdImage.appendChild(app.createImageCar());
+                
+                var $tdButton = $.createElement('td');
+                $tdButton.appendChild(app.createRemoveButton());
+
+                // for (var i = 0; i < listElementValues.length; i++) {
+                //     listElementValues[i].textContent = listValuesInputsText[i];
+                // }
 
             },
 
@@ -80,7 +90,7 @@
 
             createImageCar: function createImageCar(){
                 var $image = $.createElement('img');
-                $image.setAttribute('src', $('[data-js="image"]').get().value);
+                $image.setAttribute('src', app.getValueInputs().image);
                 $image.setAttribute('class', 'img-car');
                 return $image;
 
@@ -104,31 +114,40 @@
             createNewCar: function createNewCar(){
 
                 var $fragment = document.createDocumentFragment();
-                var $tr = $.createElement('tr');
-                var $tdImage = $.createElement('td');
-                var $tdBrand = $.createElement('td');
-                var $tdYear = $.createElement('td');
-                var $tdPlate = $.createElement('td');
-                var $tdColor = $.createElement('td');
-                var $tdButton = $.createElement('td');
-                $tdImage.appendChild(app.createImageCar());
-                $tdButton.appendChild(app.createRemoveButton());
+                // var $tr = $.createElement('tr');
+                // var $tdImage = $.createElement('td');
+                // var $tdBrand = $.createElement('td');
+                // var $tdYear = $.createElement('td');
+                // var $tdPlate = $.createElement('td');
+                // var $tdColor = $.createElement('td');
+                // var $tdButton = $.createElement('td');
+                // $tdImage.appendChild(app.createImageCar());
+                // $tdButton.appendChild(app.createRemoveButton());
 
-                app.setValueInputs([
-                    $tdBrand,
-                    $tdYear,
-                    $tdPlate,
-                    $tdColor
-                ]);
+                app.setValueAndCreateTr();
 
-                app.appendInfoCar($tr, [
-                    $tdImage,
-                    $tdBrand,
-                    $tdYear,
-                    $tdPlate,
-                    $tdColor,
-                    $tdButton
-                ]);
+                // app.setValueInputs([
+                //     $tdBrand,
+                //     $tdYear,
+                //     $tdPlate,
+                //     $tdColor
+                // ]);
+                
+                // app.setValueInputs({
+                //     $tdBrand,
+                //     $tdYear,
+                //     $tdPlate,
+                //     $tdColor
+                // });
+
+                // app.appendInfoCar($tr, [
+                //     $tdImage,
+                //     $tdBrand,
+                //     $tdYear,
+                //     $tdPlate,
+                //     $tdColor,
+                //     $tdButton
+                // ]);
 
                 return $fragment.appendChild($tr);
             },
@@ -138,12 +157,11 @@
             },
 
             companyInfo: function companyInfo() {
-            
+                
                 var ajax = new XMLHttpRequest();
                 ajax.open('GET', '/company.json', 'true'); //true habilita forma assincrona
                 ajax.send();
                 ajax.addEventListener('readystatechange', this.getCompanyInfo, false);
-                console.log(this);
 
             },
 
