@@ -8,11 +8,9 @@
         return {
 
             init: function init(){
-            
                 console.log('app init');
-                this.companyInfo();
-                this.initEvents()
-
+                app.companyInfo();
+                app.initEvents()
             },
             
             initEvents: function initEvents(){
@@ -20,7 +18,6 @@
             },
 
             handleSubmit: function handleSubmit(event){
-                
                 event.preventDefault();
                 console.log('submit');
                 var $tableCar = $('[data-js="table-car"]').get();
@@ -40,12 +37,6 @@
                 //     }
                 // );
                 
-                // return Array.prototype.map.call(
-                //     $('[data-js="form-register"] input').getAll(), function(element, index) {
-                //         return element.value;
-                //     }
-                // );
-
 
                 return Array.prototype.reduce.call(
                     $('[data-js="form-register"] input').getAll(), function (acumulated, element, index) {
@@ -57,34 +48,34 @@
             },
             
             setValueAndCreateTr: function setContentRow(listElementValues){
-                
-                var dataValue = app.getValueInputs();
-
-                console.log('resultado da funcao', dataValue);
-
+                var dataValues = app.getValueInputs();
                 var $tr = $.createElement('tr');
-                var $tdBrand = $.createElement('td');
-                var $tdYear = $.createElement('td');
-                var $tdPlate = $.createElement('td');
-                var $tdColor = $.createElement('td');
                 
                 var $tdImage = $.createElement('td');
                 $tdImage.appendChild(app.createImageCar());
                 
-                var $tdButton = $.createElement('td');
-                $tdButton.appendChild(app.createRemoveButton());
+                var $tdBrand = $.createElement('td');
+                $tdBrand.textContent = dataValues.brandmodel;
 
-                // for (var i = 0; i < listElementValues.length; i++) {
-                //     listElementValues[i].textContent = listValuesInputsText[i];
-                // }
+                var $tdYear = $.createElement('td');
+                $tdYear.textContent = dataValues.year;
 
-            },
+                var $tdPlate = $.createElement('td');
+                $tdPlate.textContent = dataValues.plate;
 
-            appendInfoCar: function appendInfoCar($parentElement, listElementsAppend) {
-            
-                for (var i = 0; i < listElementsAppend.length; i++) {
-                    $parentElement.appendChild(listElementsAppend[i]);
-                }
+                var $tdColor = $.createElement('td');
+                $tdColor.textContent = dataValues.color;
+                
+                var $tdButtonRemove = $.createElement('td');
+                $tdButtonRemove.appendChild(app.createRemoveButton());
+
+                var arrayTds = [$tdImage, $tdBrand, $tdYear, $tdPlate, $tdColor, $tdButtonRemove];
+
+                arrayTds.forEach(function(item, index){
+                    $tr.appendChild(item);
+                })
+
+                return $tr;
 
             },
 
@@ -101,67 +92,42 @@
                 $button.setAttribute('class', 'btn-remove');
                 $button.textContent = "excluir";
 
-                $button.addEventListener('click', app.removeTr, false);
+                function removeTr(e){
+                    e.preventDefault();
+                    this.parentNode.parentNode.remove();
+                }
+
+                $button.addEventListener('click', removeTr, false);
                 return $button;
             },
 
-            removeTr: function removeTr(e){
-                e.preventDefault();
-                this.parentNode.parentNode.remove();
-                
-            },
-
             createNewCar: function createNewCar(){
-
                 var $fragment = document.createDocumentFragment();
-                // var $tr = $.createElement('tr');
-                // var $tdImage = $.createElement('td');
-                // var $tdBrand = $.createElement('td');
-                // var $tdYear = $.createElement('td');
-                // var $tdPlate = $.createElement('td');
-                // var $tdColor = $.createElement('td');
-                // var $tdButton = $.createElement('td');
-                // $tdImage.appendChild(app.createImageCar());
-                // $tdButton.appendChild(app.createRemoveButton());
-
-                app.setValueAndCreateTr();
-
-                // app.setValueInputs([
-                //     $tdBrand,
-                //     $tdYear,
-                //     $tdPlate,
-                //     $tdColor
-                // ]);
-                
-                // app.setValueInputs({
-                //     $tdBrand,
-                //     $tdYear,
-                //     $tdPlate,
-                //     $tdColor
-                // });
-
-                // app.appendInfoCar($tr, [
-                //     $tdImage,
-                //     $tdBrand,
-                //     $tdYear,
-                //     $tdPlate,
-                //     $tdColor,
-                //     $tdButton
-                // ]);
-
-                return $fragment.appendChild($tr);
+                app.saveNewCar();
+                return $fragment.appendChild(app.setValueAndCreateTr());
             },
 
-            postNewCar: function postNewCar(){
-
+            saveNewCar: function saveNewCar(){
+                console.log('Salvando carro...');
+                var dataValues = app.getValueInputs(); 
+                var post = new XMLHttpRequest();
+                post.open('POST', 'http://localhost:4000/car');
+                post.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                post.send(
+                    'image=' + dataValues.image +
+                    '&brandModel=' + dataValues.brandmodel +
+                    '&year=' + dataValues.year +
+                    '&plate=' + dataValues.plate +
+                    '&color=' + dataValues.color
+                );
+                console.log('Carro salvo...');
             },
 
             companyInfo: function companyInfo() {
-                
                 var ajax = new XMLHttpRequest();
                 ajax.open('GET', '/company.json', 'true'); //true habilita forma assincrona
                 ajax.send();
-                ajax.addEventListener('readystatechange', this.getCompanyInfo, false);
+                ajax.addEventListener('readystatechange', app.getCompanyInfo, false);
 
             },
 
