@@ -3,8 +3,8 @@
 
     var app = (function(){
 
-        console.log('cola imagem', 'http://bestcars.uol.com.br/bc/wp-content/uploads/2013/09/Opel-Monza-1978-01.jpg');
-        console.log('cola imagem', 'http://qcveiculos.com.br/wp-content/uploads/2016/08/Chevrolet-Monza.jpg');
+        console.log('cola imagem monza:', 'http://qcveiculos.com.br/wp-content/uploads/2016/08/Chevrolet-Monza.jpg');
+        console.log('cola imagem fucas', 'https://http2.mlstatic.com/D_NQ_NP_639169-MLB25711011564_062017-Q.jpg');
         return {
 
             init: function init(){
@@ -49,8 +49,8 @@
 
             },
             
-            setValueAndCreateTr: function setContentRow(listElementValues){
-                var dataValues = app.getValueInputs();
+            setValueAndCreateTr: function setContentRow(dataValues){
+                
                 var $tr = $.createElement('tr');
                 
                 var $tdImage = $.createElement('td');
@@ -105,17 +105,29 @@
 
             createNewCar: function createNewCar(){
                 var $fragment = document.createDocumentFragment();
-                app.saveNewCar();
-                return $fragment.appendChild(app.setValueAndCreateTr());
+                var dataValues = app.getValueInputs();
+                app.saveNewCar(dataValues);
+                return $fragment.appendChild(app.setValueAndCreateTr(dataValues));
             },
 
             updateTable: function updateTable(){
-                console.log('atualizando tabela');
+                console.log('Atualizando a tabela');
+                
+                var get = new XMLHttpRequest();
+                get.open('GET', 'http://localhost:4000/car');
+                get.send();
+                get.addEventListener('readystatechange', function(){
+                    if( !(get.readyState === 4 && get.status === 200) ){
+                        return;
+                    }
+                    console.log(JSON.parse(this.responseText));
+                }, false);
+
             },
 
-            saveNewCar: function saveNewCar(){
+            saveNewCar: function saveNewCar(dataValues){
                 console.log('Salvando carro...');
-                var dataValues = app.getValueInputs(); 
+                // var dataValues = app.getValueInputs(); 
                 var post = new XMLHttpRequest();
                 post.open('POST', 'http://localhost:4000/car');
                 post.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -131,7 +143,7 @@
 
             companyInfo: function companyInfo() {
                 var ajax = new XMLHttpRequest();
-                ajax.open('GET', '/company.json', 'true'); //true habilita forma assincrona
+                ajax.open('GET', '/company.json'); //true habilita forma assincrona
                 ajax.send();
                 ajax.addEventListener('readystatechange', app.getCompanyInfo, false);
 
