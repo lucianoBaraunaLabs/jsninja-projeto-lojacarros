@@ -14,8 +14,7 @@
             },
             
             initEvents: function initEvents(){
-                app.updateTable();
-                
+                app.getDataCar();
                 $('[data-js=form-register]').on('submit', app.handleSubmit);
             },
 
@@ -49,24 +48,24 @@
 
             },
             
-            setValueAndCreateTr: function setContentRow(dataValues){
+            createTr: function setContentRow(objValues){
                 
                 var $tr = $.createElement('tr');
                 
                 var $tdImage = $.createElement('td');
-                $tdImage.appendChild(app.createImageCar());
+                $tdImage.appendChild(app.createImageCar(objValues));
                 
                 var $tdBrand = $.createElement('td');
-                $tdBrand.textContent = dataValues.brandmodel;
+                $tdBrand.textContent = objValues.brandModel;
 
                 var $tdYear = $.createElement('td');
-                $tdYear.textContent = dataValues.year;
+                $tdYear.textContent = objValues.year;
 
                 var $tdPlate = $.createElement('td');
-                $tdPlate.textContent = dataValues.plate;
+                $tdPlate.textContent = objValues.plate;
 
                 var $tdColor = $.createElement('td');
-                $tdColor.textContent = dataValues.color;
+                $tdColor.textContent = objValues.color;
                 
                 var $tdButtonRemove = $.createElement('td');
                 $tdButtonRemove.appendChild(app.createRemoveButton());
@@ -81,9 +80,9 @@
 
             },
 
-            createImageCar: function createImageCar(){
+            createImageCar: function createImageCar(objValues){
                 var $image = $.createElement('img');
-                $image.setAttribute('src', app.getValueInputs().image);
+                $image.setAttribute('src', objValues.image);
                 $image.setAttribute('class', 'img-car');
                 return $image;
 
@@ -107,12 +106,16 @@
                 var $fragment = document.createDocumentFragment();
                 var dataValues = app.getValueInputs();
                 app.saveNewCar(dataValues);
-                return $fragment.appendChild(app.setValueAndCreateTr(dataValues));
+
+                // if (app.saveNewCar(dataValues)){
+                //     console.log('XUXA!!!')
+                // }
+                return $fragment.appendChild(app.createTr(dataValues));
             },
 
-            updateTable: function updateTable(){
+            getDataCar: function getDataCar(){
                 console.log('Atualizando a tabela');
-                
+                var dataValues;
                 var get = new XMLHttpRequest();
                 get.open('GET', 'http://localhost:4000/car');
                 get.send();
@@ -120,14 +123,25 @@
                     if( !(get.readyState === 4 && get.status === 200) ){
                         return;
                     }
-                    console.log(JSON.parse(this.responseText));
+                    app.updateTable(JSON.parse(this.responseText));
                 }, false);
+            },
 
+            updateTable: function updateTable(objValueInputs){
+                var dataValues = objValueInputs;
+                var $fragment = document.createDocumentFragment();
+                var $tableCar = $('[data-js="table-car"]').get();
+
+                for(var key in dataValues){
+                    $fragment.appendChild(app.createTr(dataValues[key]));
+                }
+
+                $tableCar.appendChild($fragment);
+                
             },
 
             saveNewCar: function saveNewCar(dataValues){
                 console.log('Salvando carro...');
-                // var dataValues = app.getValueInputs(); 
                 var post = new XMLHttpRequest();
                 post.open('POST', 'http://localhost:4000/car');
                 post.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -139,6 +153,7 @@
                     '&color=' + dataValues.color
                 );
                 console.log('Carro salvo...');
+                return true;
             },
 
             companyInfo: function companyInfo() {
@@ -166,6 +181,10 @@
 
             isReady: function isReady(){
                 return this.readyState === 4 && this.status === 200;
+            },
+
+            isCheckCar: function isCheckCar(){
+                // Se o carro não for repetido retorne true
             }
 
         };
