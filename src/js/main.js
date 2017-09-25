@@ -14,6 +14,8 @@
             },
             
             initEvents: function initEvents(){
+                app.updateTable();
+                
                 $('[data-js=form-register]').on('submit', app.handleSubmit);
             },
 
@@ -107,6 +109,10 @@
                 return $fragment.appendChild(app.setValueAndCreateTr());
             },
 
+            updateTable: function updateTable(){
+                console.log('atualizando tabela');
+            },
+
             saveNewCar: function saveNewCar(){
                 console.log('Salvando carro...');
                 var dataValues = app.getValueInputs(); 
@@ -157,5 +163,3 @@
     app.init();
 
 })(window.DOM, document);
-
-
