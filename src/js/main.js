@@ -96,6 +96,7 @@
                 function removeTr(e){
                     e.preventDefault();
                     this.parentNode.parentNode.remove();
+                    app.deleteCarData();
                 }
 
                 $button.addEventListener('click', removeTr, false);
@@ -138,6 +139,10 @@
 
                 $tableCar.appendChild($fragment);
                 
+            },
+
+            deleteCarData: function deleteCarData(){
+                console.log('deletando carro agora')
             },
 
             saveNewCar: function saveNewCar(dataValues){
