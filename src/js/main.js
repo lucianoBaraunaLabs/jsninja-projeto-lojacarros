@@ -89,6 +89,8 @@
             },
 
             createRemoveButton: function buttonRemove(){
+                var dataValues = app.getValueInputs(); // AQUI ESTÁ VINDO VAZIO PRECISO COLOCAR AQUI A PLACA.
+                // Ao criar a tabela é interessante que seja colocado um atributo data em casa td para saber quem é quem e ficar mais fácil de ser excluido
                 var $button = $.createElement('button');
                 $button.setAttribute('class', 'btn-remove');
                 $button.textContent = "excluir";
@@ -96,7 +98,7 @@
                 function removeTr(e){
                     e.preventDefault();
                     this.parentNode.parentNode.remove();
-                    app.deleteCarData();
+                    app.deleteCarData(dataValues);
                 }
 
                 $button.addEventListener('click', removeTr, false);
@@ -107,10 +109,6 @@
                 var $fragment = document.createDocumentFragment();
                 var dataValues = app.getValueInputs();
                 app.saveNewCar(dataValues);
-
-                // if (app.saveNewCar(dataValues)){
-                //     console.log('XUXA!!!')
-                // }
                 return $fragment.appendChild(app.createTr(dataValues));
             },
 
@@ -121,7 +119,7 @@
                 get.open('GET', 'http://localhost:4000/car');
                 get.send();
                 get.addEventListener('readystatechange', function(){
-                    if( !(get.readyState === 4 && get.status === 200) ){
+                    if (!app.isReady.call(this) ){
                         return;
                     }
                     app.updateTable(JSON.parse(this.responseText));
@@ -141,8 +139,15 @@
                 
             },
 
-            deleteCarData: function deleteCarData(){
-                console.log('deletando carro agora')
+            deleteCarData: function deleteCarData(dataValues){
+                console.log('deletando carro agora');
+                
+                console.log(dataValues.plate);
+                // var delAjax = new XMLHttpRequest();
+                // delAjax.open('DELETE', 'http://localhost:4000/car');
+                // delAjax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                // delAjax.send('&plate=' + dataValues.plate);
+                
             },
 
             saveNewCar: function saveNewCar(dataValues){
