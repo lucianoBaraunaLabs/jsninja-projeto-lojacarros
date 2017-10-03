@@ -3,8 +3,8 @@
 
     var app = (function(){
 
-        console.log('cola imagem', 'http://bestcars.uol.com.br/bc/wp-content/uploads/2013/09/Opel-Monza-1978-01.jpg');
-        console.log('cola imagem', 'http://qcveiculos.com.br/wp-content/uploads/2016/08/Chevrolet-Monza.jpg');
+        console.log('cola imagem monza:', 'http://qcveiculos.com.br/wp-content/uploads/2016/08/Chevrolet-Monza.jpg');
+        console.log('cola imagem fucas', 'https://http2.mlstatic.com/D_NQ_NP_639169-MLB25711011564_062017-Q.jpg');
         return {
 
             init: function init(){
@@ -14,8 +14,7 @@
             },
             
             initEvents: function initEvents(){
-                app.updateTable();
-                
+                app.getDataCar();
                 $('[data-js=form-register]').on('submit', app.handleSubmit);
             },
 
@@ -49,24 +48,24 @@
 
             },
             
-            setValueAndCreateTr: function setContentRow(listElementValues){
-                var dataValues = app.getValueInputs();
+            createTr: function setContentRow(objValues){
+                
                 var $tr = $.createElement('tr');
                 
                 var $tdImage = $.createElement('td');
-                $tdImage.appendChild(app.createImageCar());
+                $tdImage.appendChild(app.createImageCar(objValues));
                 
                 var $tdBrand = $.createElement('td');
-                $tdBrand.textContent = dataValues.brandmodel;
+                $tdBrand.textContent = objValues.brandModel;
 
                 var $tdYear = $.createElement('td');
-                $tdYear.textContent = dataValues.year;
+                $tdYear.textContent = objValues.year;
 
                 var $tdPlate = $.createElement('td');
-                $tdPlate.textContent = dataValues.plate;
+                $tdPlate.textContent = objValues.plate;
 
                 var $tdColor = $.createElement('td');
-                $tdColor.textContent = dataValues.color;
+                $tdColor.textContent = objValues.color;
                 
                 var $tdButtonRemove = $.createElement('td');
                 $tdButtonRemove.appendChild(app.createRemoveButton());
@@ -81,9 +80,9 @@
 
             },
 
-            createImageCar: function createImageCar(){
+            createImageCar: function createImageCar(objValues){
                 var $image = $.createElement('img');
-                $image.setAttribute('src', app.getValueInputs().image);
+                $image.setAttribute('src', objValues.image);
                 $image.setAttribute('class', 'img-car');
                 return $image;
 
@@ -105,17 +104,44 @@
 
             createNewCar: function createNewCar(){
                 var $fragment = document.createDocumentFragment();
-                app.saveNewCar();
-                return $fragment.appendChild(app.setValueAndCreateTr());
+                var dataValues = app.getValueInputs();
+                app.saveNewCar(dataValues);
+
+                // if (app.saveNewCar(dataValues)){
+                //     console.log('XUXA!!!')
+                // }
+                return $fragment.appendChild(app.createTr(dataValues));
             },
 
-            updateTable: function updateTable(){
-                console.log('atualizando tabela');
+            getDataCar: function getDataCar(){
+                console.log('Atualizando a tabela');
+                var dataValues;
+                var get = new XMLHttpRequest();
+                get.open('GET', 'http://localhost:4000/car');
+                get.send();
+                get.addEventListener('readystatechange', function(){
+                    if( !(get.readyState === 4 && get.status === 200) ){
+                        return;
+                    }
+                    app.updateTable(JSON.parse(this.responseText));
+                }, false);
             },
 
-            saveNewCar: function saveNewCar(){
+            updateTable: function updateTable(objValueInputs){
+                var dataValues = objValueInputs;
+                var $fragment = document.createDocumentFragment();
+                var $tableCar = $('[data-js="table-car"]').get();
+
+                for(var key in dataValues){
+                    $fragment.appendChild(app.createTr(dataValues[key]));
+                }
+
+                $tableCar.appendChild($fragment);
+                
+            },
+
+            saveNewCar: function saveNewCar(dataValues){
                 console.log('Salvando carro...');
-                var dataValues = app.getValueInputs(); 
                 var post = new XMLHttpRequest();
                 post.open('POST', 'http://localhost:4000/car');
                 post.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -127,11 +153,12 @@
                     '&color=' + dataValues.color
                 );
                 console.log('Carro salvo...');
+                return true;
             },
 
             companyInfo: function companyInfo() {
                 var ajax = new XMLHttpRequest();
-                ajax.open('GET', '/company.json', 'true'); //true habilita forma assincrona
+                ajax.open('GET', '/company.json'); //true habilita forma assincrona
                 ajax.send();
                 ajax.addEventListener('readystatechange', app.getCompanyInfo, false);
 
@@ -154,6 +181,10 @@
 
             isReady: function isReady(){
                 return this.readyState === 4 && this.status === 200;
+            },
+
+            isCheckCar: function isCheckCar(){
+                // Se o carro não for repetido retorne true
             }
 
         };
