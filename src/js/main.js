@@ -54,27 +54,33 @@
                 
                 var $tdImage = $.createElement('td');
                 $tdImage.appendChild(app.createImageCar(objValues));
+                $tdImage.setAttribute('data-js-table', 'image');
+                $tr.appendChild($tdImage);
                 
                 var $tdBrand = $.createElement('td');
                 $tdBrand.textContent = objValues.brandModel;
-
+                
                 var $tdYear = $.createElement('td');
                 $tdYear.textContent = objValues.year;
-
+                
                 var $tdPlate = $.createElement('td');
                 $tdPlate.textContent = objValues.plate;
-
+                
                 var $tdColor = $.createElement('td');
                 $tdColor.textContent = objValues.color;
-                
-                var $tdButtonRemove = $.createElement('td');
-                $tdButtonRemove.appendChild(app.createRemoveButton());
 
-                var arrayTds = [$tdImage, $tdBrand, $tdYear, $tdPlate, $tdColor, $tdButtonRemove];
+                var arrayTds = [$tdBrand, $tdYear, $tdPlate, $tdColor];
+                var valueData = Object.keys(objValues).slice(1);
 
                 arrayTds.forEach(function(item, index){
+                    item.setAttribute('data-js-teste', valueData[index]);
                     $tr.appendChild(item);
                 })
+
+                var $tdButtonRemove = $.createElement('td');
+                $tdButtonRemove.appendChild(app.createRemoveButton());
+                $tdButtonRemove.setAttribute('data-js-table', 'btnremove');
+                $tr.appendChild($tdButtonRemove);
 
                 return $tr;
 
