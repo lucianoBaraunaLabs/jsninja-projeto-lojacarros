@@ -47,7 +47,6 @@
                 );
 
             },
-            
             createTr: function setContentRow(objValues){
                 
                 var $tr = $.createElement('tr');
@@ -73,13 +72,13 @@
                 var valueData = Object.keys(objValues).slice(1);
 
                 arrayTds.forEach(function(item, index){
-                    item.setAttribute('data-js-teste', valueData[index]);
+                    item.setAttribute('data-js-table', valueData[index]);
                     $tr.appendChild(item);
                 })
 
                 var $tdButtonRemove = $.createElement('td');
                 $tdButtonRemove.appendChild(app.createRemoveButton());
-                $tdButtonRemove.setAttribute('data-js-table', 'btnremove');
+                $tdButtonRemove.setAttribute('data-js-table', 'remove-td');
                 $tr.appendChild($tdButtonRemove);
 
                 return $tr;
@@ -95,16 +94,22 @@
             },
 
             createRemoveButton: function buttonRemove(){
-                var dataValues = app.getValueInputs(); // AQUI ESTÁ VINDO VAZIO PRECISO COLOCAR AQUI A PLACA.
-                // Ao criar a tabela é interessante que seja colocado um atributo data em casa td para saber quem é quem e ficar mais fácil de ser excluido
                 var $button = $.createElement('button');
                 $button.setAttribute('class', 'btn-remove');
                 $button.textContent = "excluir";
 
                 function removeTr(e){
                     e.preventDefault();
-                    this.parentNode.parentNode.remove();
-                    app.deleteCarData(dataValues);
+                    // this.parentNode.parentNode.remove(); REMOVENDO O A TR DO DOM
+                    // app.deleteCarData(); // Ajax delete
+
+                    var $trParent = this.parentNode.parentNode;
+
+                   
+                    console.log($('[data-js-table="plate"]').get())
+                    console.log($trParent)
+                    console.log(doc.querySelectorAll($trParent+'td'))
+                    // console.log($trParent.$('[data-js-table="plate"]').get().value);
                 }
 
                 $button.addEventListener('click', removeTr, false);

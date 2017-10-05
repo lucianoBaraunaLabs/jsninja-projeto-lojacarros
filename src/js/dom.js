@@ -54,7 +54,7 @@
     return this.element[index];
   }
 
-  DOM.prototype.getAll = function methodGetall(){
+  DOM.prototype.getAll = function methodGetAll(){
       return this.element;
   }
 
