@@ -103,13 +103,17 @@
                     // this.parentNode.parentNode.remove(); REMOVENDO O A TR DO DOM
                     // app.deleteCarData(); // Ajax delete
 
+                    // Professor estou tentando nesse caso aqui pegar a minha tr do button que clico para conseguir chegar no valor da placa 
+                    // para assim conseguir excluir ele do banco
+
                     var $trParent = this.parentNode.parentNode;
 
-                   
-                    console.log($('[data-js-table="plate"]').get())
-                    console.log($trParent)
-                    console.log(doc.querySelectorAll($trParent+'td'))
-                    // console.log($trParent.$('[data-js-table="plate"]').get().value);
+                    
+                    console.log('td', $trParent.querySelectorAll('td')) // nesse caso funciona
+                    console.log('td', $($trParent + ' td').getAll()) // Não funciona pq no retorno do elemento o queryselector não consegue tratar.
+                    
+                    // Uncaught DOMException: Failed to execute 'querySelectorAll' on 'Document': '[object HTMLTableRowElement] td' is not a valid selector.
+                    
                 }
 
                 $button.addEventListener('click', removeTr, false);
