@@ -50,6 +50,10 @@
             createTr: function setContentRow(objValues){
                 
                 var $tr = $.createElement('tr');
+                $tr.setAttribute('data-js-table', app.putCarRegistredTr())
+
+                // Iniciar com data-js-table-1
+                // Se existe a data-js-table-1 crie uma tr nova com o indice + 1
                 
                 var $tdImage = $.createElement('td');
                 $tdImage.appendChild(app.createImageCar(objValues));
@@ -85,6 +89,16 @@
 
             },
 
+            putCarRegistredTr: function putCarRegistredTr(){
+
+                var $dataCarRegistred = $('[data-js-table=car-registred-]').getAll();
+
+                console.log($dataCarRegistred);
+
+
+                return 'car-registred' + '-'; // colocar a placa do carro aqui para aproveitarmos e excluirmos tudo ;-)
+            },
+
             createImageCar: function createImageCar(objValues){
                 var $image = $.createElement('img');
                 $image.setAttribute('src', objValues.image);
@@ -106,13 +120,15 @@
                     // Professor estou tentando nesse caso aqui pegar a minha tr do button que clico para conseguir chegar no valor da placa 
                     // para assim conseguir excluir ele do banco
 
-                    var $trParent = this.parentNode.parentNode;
+                    var $trParent = this.parentNode;
+
+                    console.log($trParent.querySelector('[data-js-table=car-registered]'))
 
                     
-                    console.log('td', $trParent.querySelectorAll('td')) // nesse caso funciona
-                    console.log('td', $($trParent + ' td').getAll()) // Não funciona pq no retorno do elemento o queryselector não consegue tratar.
+                    // console.log('td', $trParent.querySelectorAll('td')) // nesse caso funciona
                     
-                    // Uncaught DOMException: Failed to execute 'querySelectorAll' on 'Document': '[object HTMLTableRowElement] td' is not a valid selector.
+                    
+                    
                     
                 }
 
