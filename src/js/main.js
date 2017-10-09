@@ -78,7 +78,7 @@
                 })
 
                 var $tdButtonRemove = $.createElement('td');
-                $tdButtonRemove.appendChild(app.createRemoveButton());
+                $tdButtonRemove.appendChild(app.createRemoveButton(objValues.plate));
                 $tdButtonRemove.setAttribute('data-js-table', 'remove-td');
                 $tr.appendChild($tdButtonRemove);
 
@@ -98,26 +98,25 @@
 
             },
 
-            createRemoveButton: function buttonRemove(){
+            createRemoveButton: function buttonRemove(objValuePlate){
                 var $button = $.createElement('button');
                 $button.setAttribute('class', 'btn-remove');
+                $button.setAttribute('data-js-idcar-remove', objValuePlate);
                 $button.textContent = "excluir";
+
 
                 function removeTr(e){
                     e.preventDefault();
                     // this.parentNode.parentNode.remove(); REMOVENDO O A TR DO DOM
                     // app.deleteCarData(); // Ajax delete
 
-                    // Professor estou tentando nesse caso aqui pegar a minha tr do button que clico para conseguir chegar no valor da placa 
-                    // para assim conseguir excluir ele do banco
+                    // $buttonIdCar = this.getAttribute('data-js-idcar-remove');
+                    var $buttonIdCar = this.getAttribute('data-js-idcar-remove');
+                    var $trsTableCar = $("[data-js-table-plateid]").getAll();
 
-                    var $trParent = this.parentNode;
+                    console.log($buttonIdCar);
+                    console.log($trsTableCar);
 
-                    // console.log(document.querySelector('[data-js-table=car-registred-]'))
-
-                    
-                    // console.log('td', $trParent.querySelectorAll('td')) // nesse caso funciona
-                    
                     
                     
                     
