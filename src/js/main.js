@@ -50,10 +50,7 @@
             createTr: function setContentRow(objValues){
                 
                 var $tr = $.createElement('tr');
-                $tr.setAttribute('data-js-table', app.putCarRegistredTr())
-
-                // Iniciar com data-js-table-1
-                // Se existe a data-js-table-1 crie uma tr nova com o indice + 1
+                $tr.setAttribute('data-js-table-plateid', app.putPlateCarID(objValues.plate))
                 
                 var $tdImage = $.createElement('td');
                 $tdImage.appendChild(app.createImageCar(objValues));
@@ -61,7 +58,7 @@
                 $tr.appendChild($tdImage);
                 
                 var $tdBrand = $.createElement('td');
-                $tdBrand.textContent = objValues.brandModel;
+                $tdBrand.textContent = objValues.brandmodel;
                 
                 var $tdYear = $.createElement('td');
                 $tdYear.textContent = objValues.year;
@@ -89,14 +86,8 @@
 
             },
 
-            putCarRegistredTr: function putCarRegistredTr(){
-
-                var $dataCarRegistred = $('[data-js-table=car-registred-]').getAll();
-
-                console.log($dataCarRegistred);
-
-
-                return 'car-registred' + '-'; // colocar a placa do carro aqui para aproveitarmos e excluirmos tudo ;-)
+            putPlateCarID: function putPlateCarID(objValuePlate){
+                return objValuePlate;
             },
 
             createImageCar: function createImageCar(objValues){
@@ -122,7 +113,7 @@
 
                     var $trParent = this.parentNode;
 
-                    console.log($trParent.querySelector('[data-js-table=car-registered]'))
+                    // console.log(document.querySelector('[data-js-table=car-registred-]'))
 
                     
                     // console.log('td', $trParent.querySelectorAll('td')) // nesse caso funciona
