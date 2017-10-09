@@ -50,6 +50,7 @@
             createTr: function setContentRow(objValues){
                 
                 var $tr = $.createElement('tr');
+                $tr.setAttribute('id', app.putPlateCarID(objValues.plate))
                 $tr.setAttribute('data-js-table-plateid', app.putPlateCarID(objValues.plate))
                 
                 var $tdImage = $.createElement('td');
@@ -112,10 +113,17 @@
 
                     // $buttonIdCar = this.getAttribute('data-js-idcar-remove');
                     var $buttonIdCar = this.getAttribute('data-js-idcar-remove');
-                    var $trsTableCar = $("[data-js-table-plateid]").getAll();
+                    var $trsTableCar = $('[data-js-table-plateid]').getAll();
 
                     console.log($buttonIdCar);
                     console.log($trsTableCar);
+
+                    $trsTableCar.forEach(function(item, index){
+                            
+                        console.log(item.getAttribute('[data-js-table-plateid]'));
+                        console.log(item.getAttribute('id'));
+                        // }
+                    },$trsTableCar)
 
                     
                     
