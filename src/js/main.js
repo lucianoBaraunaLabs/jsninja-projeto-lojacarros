@@ -119,7 +119,7 @@
                     console.log($trsTableCar);
 
                     $trsTableCar.forEach(function(item, index){
-                        console.log(item.getAttribute('[data-js-table-plateid]')); // Só funciona se eu colocar dataset.jsTablePlateid mais só funciona apartir do IE11
+                        console.log('ta funcionado porra', item.getAttribute('data-js-table-plateid')); // Só funciona se eu colocar dataset.jsTablePlateid mais só funciona apartir do IE11
                         console.log(item.getAttribute('id')); // aqui funciona em tudão
                     },$trsTableCar)
 
