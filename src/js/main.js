@@ -27,18 +27,6 @@
             },
             
             getValueInputs: function getValueInputs(){
-                // return Array.prototype.map.call(
-                //     $('[data-js="form-register"] input[type="text"]').getAll(), function(element, value) {
-                //         return element.value;
-
-                //     // Validar depois se for o caso
-                //     // if( !(element.value === '') )
-                //     //   return element.value;
-                //     // return alert('Por favor preecha os campos.'); Validando os campos
-                //     }
-                // );
-                
-
                 return Array.prototype.reduce.call(
                     $('[data-js="form-register"] input').getAll(), function (acumulated, element, index) {
                          acumulated[element.getAttribute('data-js')] = element.value
@@ -50,7 +38,7 @@
             createTr: function setContentRow(objValues){
                 
                 var $tr = $.createElement('tr');
-                $tr.setAttribute('id', app.putPlateCarID(objValues.plate))
+                $tr.setAttribute('id', 'placa' + app.putPlateCarID(objValues.plate))
                 $tr.setAttribute('data-js-table-plateid', app.putPlateCarID(objValues.plate))
                 
                 var $tdImage = $.createElement('td');
@@ -105,31 +93,27 @@
                 $button.setAttribute('data-js-idcar-remove', objValuePlate);
                 $button.textContent = "excluir";
 
+                $button.addEventListener('click', app.removeTr, false);
+                return $button;
+            },
 
-                function removeTr(e){
+            removeTr: function removeTr(e){
                     e.preventDefault();
-                    // this.parentNode.parentNode.remove(); REMOVENDO O A TR DO DOM
-                    // app.deleteCarData(); // Ajax delete
-
-                    // $buttonIdCar = this.getAttribute('data-js-idcar-remove');
                     var $buttonIdCar = this.getAttribute('data-js-idcar-remove');
                     var $trsTableCar = $('[data-js-table-plateid]').getAll();
 
-                    console.log($buttonIdCar);
-                    console.log($trsTableCar);
+                    function trGetAtributeId(item){
+                        return item.getAttribute('data-js-table-plateid')
+                    }
 
-                    $trsTableCar.forEach(function(item, index){
-                        console.log('ta funcionado porra', item.getAttribute('data-js-table-plateid')); // Só funciona se eu colocar dataset.jsTablePlateid mais só funciona apartir do IE11
-                        console.log(item.getAttribute('id')); // aqui funciona em tudão
-                    },$trsTableCar)
-
-                    
-                    
-                    
-                }
-
-                $button.addEventListener('click', removeTr, false);
-                return $button;
+                    function isHasTrButtonRemove(item){
+                        if(item === $buttonIdCar){
+                            document.querySelector('#placa' + item).remove()
+                            app.deleteCarData(item);
+                        }
+                         
+                    }
+                    Array.prototype.map.call($trsTableCar, trGetAtributeId).filter(isHasTrButtonRemove);
             },
 
             createNewCar: function createNewCar(){
@@ -166,15 +150,12 @@
                 
             },
 
-            deleteCarData: function deleteCarData(dataValues){
+            deleteCarData: function deleteCarData(valuePlateTr){
                 console.log('deletando carro agora');
-                
-                console.log(dataValues.plate);
-                // var delAjax = new XMLHttpRequest();
-                // delAjax.open('DELETE', 'http://localhost:4000/car');
-                // delAjax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                // delAjax.send('&plate=' + dataValues.plate);
-                
+                var delAjax = new XMLHttpRequest();
+                delAjax.open('DELETE', 'http://localhost:4000/car');
+                delAjax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                delAjax.send('&plate=' + valuePlateTr);
             },
 
             saveNewCar: function saveNewCar(dataValues){
@@ -218,12 +199,7 @@
 
             isReady: function isReady(){
                 return this.readyState === 4 && this.status === 200;
-            },
-
-            isCheckCar: function isCheckCar(){
-                // Se o carro não for repetido retorne true
             }
-
         };
 
     })()
