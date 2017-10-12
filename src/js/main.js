@@ -99,21 +99,19 @@
 
             removeTr: function removeTr(e){
                     e.preventDefault();
-                    var $buttonIdCar = this.getAttribute('data-js-idcar-remove');
+                    var $buttonDelete = this;
+                    var buttonDeleteId = $buttonDelete.getAttribute('data-js-idcar-remove');
                     var $trsTableCar = $('[data-js-table-plateid]').getAll();
-
-                    function trGetAtributeId(item){
-                        return item.getAttribute('data-js-table-plateid')
-                    }
-
-                    function isHasTrButtonRemove(item){
-                        if(item === $buttonIdCar){
-                            document.querySelector('#placa' + item).remove()
-                            app.deleteCarData(item);
+                    $trsTableCar.forEach(function(element, index){
+                        if (app.isTrRemove(element, buttonDeleteId)) {
+                            app.deleteCarData(element);
+                            $buttonDelete.removeEventListener('click', app.removeTr, false);
+                            $('#placa' + buttonDeleteId).get().remove()
                         }
-                         
-                    }
-                    Array.prototype.map.call($trsTableCar, trGetAtributeId).filter(isHasTrButtonRemove);
+                    })
+            },
+            isTrRemove: function isTrRemove(element, buttonDeleteId){
+                return element.getAttribute('data-js-table-plateid') === buttonDeleteId;
             },
 
             createNewCar: function createNewCar(){
