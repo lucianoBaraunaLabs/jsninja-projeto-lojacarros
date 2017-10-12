@@ -98,17 +98,17 @@
             },
 
             removeTr: function removeTr(e){
-                    e.preventDefault();
-                    var $buttonDelete = this;
-                    var buttonDeleteId = $buttonDelete.getAttribute('data-js-idcar-remove');
-                    var $trsTableCar = $('[data-js-table-plateid]').getAll();
-                    $trsTableCar.forEach(function(element, index){
-                        if (app.isTrRemove(element, buttonDeleteId)) {
-                            app.deleteCarData(element);
-                            $buttonDelete.removeEventListener('click', app.removeTr, false);
-                            $('#placa' + buttonDeleteId).get().remove()
-                        }
-                    })
+                e.preventDefault();
+                var $buttonDelete = this;
+                var buttonDeleteId = $buttonDelete.getAttribute('data-js-idcar-remove');
+                var $trsTableCar = $('[data-js-table-plateid]').getAll();
+                $trsTableCar.forEach(function(element, index){
+                    if (app.isTrRemove(element, buttonDeleteId)) {
+                        app.deleteCarData(element);
+                        $buttonDelete.removeEventListener('click', app.removeTr, false);
+                        $('#placa' + buttonDeleteId).get().remove()
+                    }
+                })
             },
             isTrRemove: function isTrRemove(element, buttonDeleteId){
                 return element.getAttribute('data-js-table-plateid') === buttonDeleteId;
